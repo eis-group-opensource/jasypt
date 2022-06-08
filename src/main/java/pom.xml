@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ======================================================================= -->
+<!--                                                                         -->
+<!--   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)      -->
+<!--                                                                         -->
+<!--   Licensed under the Apache License, Version 2.0 (the "License");       -->
+<!--   you may not use this file except in compliance with the License.      -->
+<!--   You may obtain a copy of the License at                               -->
+<!--                                                                         -->
+<!--       http://www.apache.org/licenses/LICENSE-2.0                        -->
+<!--                                                                         -->
+<!--   Unless required by applicable law or agreed to in writing, software   -->
+<!--   distributed under the License is distributed on an "AS IS" BASIS,     -->
+<!--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or       -->
+<!--   implied. See the License for the specific language governing          -->
+<!--   permissions and limitations under the License.                        -->
+<!--                                                                         -->
+<!-- ======================================================================= -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jasypt</groupId>
+  <artifactId>jasypt</artifactId>
+  <packaging>jar</packaging>
+  <version>1.9.3-e2</version>
+  <name>JASYPT: Java Simplified Encryption</name>
+  <url>http://www.jasypt.org</url>
+
+  <description>Java library which enables encryption in java apps with minimum effort.</description>
+
+    <scm>
+        <connection>scm:hg:https://vno-hg.exigengroup.com/hg/eis-thirdparty</connection>
+        <developerConnection>scm:hg:https://vno-hg.exigengroup.com/hg/eis-thirdparty</developerConnection>
+        <url>https://vno-hg.exigengroup.com/hg/eis-thirdparty</url>
+      <tag>HEAD</tag>
+  </scm>
+	
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>The JASYPT team</name>
+    <url>http://www.jasypt.org</url>
+  </organization>
+  
+  <developers>
+    <developer>
+      <id>dfernandez</id>
+      <name>Daniel Fernandez</name>
+      <email>dfernandez AT users.sourceforge.net</email>
+      <roles>
+        <role>Project admin</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <build>
+
+    <resources>
+	
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+	  
+    </resources>
+    
+    <plugins>
+	
+	  <plugin>
+		<artifactId>maven-jar-plugin</artifactId>
+		<executions>
+			<execution>
+				<goals>
+					<goal>test-jar</goal>
+				</goals>
+			</execution>
+		</executions>
+	  </plugin>
+	  
+	  <plugin>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<configuration>
+			<excludes>
+				<exclude>**/TestContext.java</exclude>
+			</excludes>
+			<systemProperties>
+				<property>
+					<name>liquibase.defaultlogger.level</name>
+					<value>severe</value>
+				</property>
+			</systemProperties>
+		</configuration>
+	  </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+          <encoding>US-ASCII</encoding>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <encoding>US-ASCII</encoding>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-javadoc-plugin</artifactId>
+		<executions>
+			<execution>
+				<id>api</id>
+				<phase>prepare-package</phase>
+				<goals>
+					<goal>javadoc</goal>
+				</goals>
+				<configuration>
+					<sourcepath>../jasypt/src/main/java</sourcepath>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</execution>
+		</executions>
+	  </plugin>
+	  
+    </plugins>
+    
+  </build>
+
+  <dependencies>
+  
+    <dependency>
+        <groupId>com.ibm.icu</groupId>
+        <artifactId>icu4j</artifactId>
+        <version>3.4.4</version>
+        <scope>provided</scope>
+        <optional>true</optional>
+    </dependency>
+	
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.4</version>
+        <scope>provided</scope>
+        <optional>true</optional>
+    </dependency>
+	
+    <dependency>
+        <groupId>bouncycastle</groupId>
+        <artifactId>bcprov-jdk12</artifactId>
+        <version>140</version>
+        <scope>test</scope>
+    </dependency>
+	
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+        <scope>test</scope>
+    </dependency>
+	
+    <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.1</version>
+        <scope>test</scope>
+    </dependency>
+	
+</dependencies>
+  
+  <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+  
+</project>
